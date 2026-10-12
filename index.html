@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luma Store | Katalog Produk</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #d94683;
+      --dark: #171522;
+      --muted: #777487;
+      --light: #fff8fb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--light);
+      color: var(--dark);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 3px 18px rgba(35, 20, 40, 0.06);
+    }
+
+    .navbar-brand {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.7px;
+    }
+
+    .nav-link {
+      color: #4d4858;
+      font-weight: 600;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 55px 0 35px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      background: #ffe4ef;
+      color: #b92767;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.15;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 580px;
+      margin: 15px auto 0;
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .catalog-section {
+      padding: 25px 0 65px;
+    }
+
+    .section-title {
+      font-weight: 800;
+      letter-spacing: -0.6px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Mobile-first: satu kolom */
+    .product-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .product-card {
+      height: 100%;
+      overflow: hidden;
+      background: white;
+      border: 1px solid #f0e8ee;
+      border-radius: 18px;
+      box-shadow: 0 5px 20px rgba(42, 23, 40, 0.045);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(42, 23, 40, 0.10);
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      background: #f5edf2;
+    }
+
+    .product-info {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 0px);
+    }
+
+    .product-category {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+    }
+
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 750;
+      margin: 8px 0;
+    }
+
+    .product-description {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 12px 0 15px;
+    }
+
+    .btn-buy {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-weight: 700;
+      transition: background 0.2s ease;
+    }
+
+    .btn-buy:hover {
+      background: #b92d6b;
+      color: white;
+    }
+
+    .empty-message {
+      display: none;
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    footer {
+      background: #201a29;
+      color: #fff;
+      padding: 28px 0;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 5px 0;
+      color: #d6cbd9;
+      font-size: 0.88rem;
+    }
+
+    /* Tablet: mulai 768px, dua kolom */
+    @media (min-width: 768px) {
+      .hero {
+        padding-top: 70px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 25px;
+      }
+    }
+
+    /* Desktop: mulai 1024px, empat kolom */
+    @media (min-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR RESPONSIF -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Luma<span style="color:#171522">.</span></a>
+
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#menuNavigasi"
+              aria-controls="menuNavigasi"
+              aria-expanded="false"
+              aria-label="Buka menu navigasi">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menuNavigasi">
+        <ul class="navbar-nav ms-auto gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#beranda">Beranda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#produk">Katalog Produk</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#kontak">Kontak</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="beranda">
+    <div class="container">
+      <span class="hero-label">✦ PILIHAN PRODUK TERBAIK</span>
+      <h1>Temukan Favoritmu<br>di <span>Luma Store.</span></h1>
+      <p>
+        Temukan produk pilihan dengan desain menarik, kualitas terbaik,
+        dan harga yang ramah di kantong.
+      </p>
+    </div>
+  </header>
+
+  <!-- KATALOG PRODUK -->
+  <main>
+    <section class="catalog-section" id="produk">
+      <div class="container">
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-end gap-3">
+          <div>
+            <h2 class="section-title">Katalog Produk</h2>
+            <p class="section-subtitle mb-0">
+              Pilihan menarik untuk kebutuhan sehari-hari.
+            </p>
+          </div>
+
+          <div class="text-secondary small">
+            <span id="jumlahProduk">8</span> produk tersedia
+          </div>
+        </div>
+
+        <div class="product-grid" id="daftarProduk">
+
+          <!-- PRODUK 1 -->
+          <article class="product-card" data-name="headphone wireless">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80"
+              alt="Headphone wireless"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Elektronik</span>
+              <h3 class="product-name">Headphone Wireless</h3>
+              <p class="product-description">
+                Headphone modern untuk mendengarkan musik dengan nyaman.
+              </p>
+              <div class="product-price">Rp249.000</div>
+              <button class="btn-buy" data-product="Headphone Wireless">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 2 -->
+          <article class="product-card" data-name="jam tangan klasik">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80"
+              alt="Jam tangan klasik"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Aksesori</span>
+              <h3 class="product-name">Jam Tangan Klasik</h3>
+              <p class="product-description">
+                Jam tangan minimalis untuk gaya kasual maupun formal.
+              </p>
+              <div class="product-price">Rp175.000</div>
+              <button class="btn-buy" data-product="Jam Tangan Klasik">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 3 -->
+          <article class="product-card" data-name="tas selempang">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=700&q=80"
+              alt="Tas selempang"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Fashion</span>
+              <h3 class="product-name">Tas Selempang</h3>
+              <p class="product-description">
+                Tas praktis dengan desain simpel untuk aktivitas harian.
+              </p>
+              <div class="product-price">Rp135.000</div>
+              <button class="btn-buy" data-product="Tas Selempang">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 4 -->
+          <article class="product-card" data-name="sepatu kasual">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
+              alt="Sepatu kasual"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Fashion</span>
+              <h3 class="product-name">Sepatu Kasual</h3>
+              <p class="product-description">
+                Sepatu nyaman untuk menemani kegiatan sehari-hari.
+              </p>
+              <div class="product-price">Rp320.000</div>
+              <button class="btn-buy" data-product="Sepatu Kasual">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 5 -->
+          <article class="product-card" data-name="botol minum">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=700&q=80"
+              alt="Botol minum"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Perlengkapan</span>
+              <h3 class="product-name">Botol Minum</h3>
+              <p class="product-description">
+                Botol minum praktis untuk kuliah, bekerja, dan berolahraga.
+              </p>
+              <div class="product-price">Rp65.000</div>
+              <button class="btn-buy" data-product="Botol Minum">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 6 -->
+          <article class="product-card" data-name="kacamata modern">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"
+              alt="Kacamata modern"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Aksesori</span>
+              <h3 class="product-name">Kacamata Modern</h3>
+              <p class="product-description">
+                Aksesori bergaya modern untuk melengkapi penampilan.
+              </p>
+              <div class="product-price">Rp110.000</div>
+              <button class="btn-buy" data-product="Kacamata Modern">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 7 -->
+          <article class="product-card" data-name="kamera instan">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=80"
+              alt="Kamera"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Elektronik</span>
+              <h3 class="product-name">Kamera Digital</h3>
+              <p class="product-description">
+                Kamera untuk mengabadikan momen spesial dengan mudah.
+              </p>
+              <div class="product-price">Rp1.250.000</div>
+              <button class="btn-buy" data-product="Kamera Digital">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+          <!-- PRODUK 8 -->
+          <article class="product-card" data-name="tas ransel">
+            <img class="product-image"
+              src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+              alt="Tas ransel"
+              loading="lazy">
+            <div class="product-info">
+              <span class="product-category">Perlengkapan</span>
+              <h3 class="product-name">Tas Ransel</h3>
+              <p class="product-description">
+                Tas dengan ruang penyimpanan untuk kebutuhan sehari-hari.
+              </p>
+              <div class="product-price">Rp199.000</div>
+              <button class="btn-buy" data-product="Tas Ransel">
+                Beli Sekarang
+              </button>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="empty-message" id="pesanKosong">
+          Produk tidak ditemukan.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="kontak">
+    <div class="container">
+      <h5 class="fw-bold">Luma Store.</h5>
+      <p>Katalog produk responsif untuk tugas Pemrograman Web.</p>
+      <p>© 2026 Luma Store. Dibuat untuk pembelajaran.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JavaScript untuk menu hamburger -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Menghitung jumlah produk
+    const produk = document.querySelectorAll(".product-card");
+    document.getElementById("jumlahProduk").textContent = produk.length;
+
+    // Tombol beli sebagai simulasi interaksi
+    document.querySelectorAll(".btn-buy").forEach(function(tombol) {
+      tombol.addEventListener("click", function() {
+        const nama = tombol.dataset.product;
+        alert("Kamu memilih " + nama +
+              ". Ini adalah simulasi tombol beli.");
+      });
+    });
+
+    // Menutup menu mobile setelah tautan navigasi dipilih
+    document.querySelectorAll(".navbar-nav .nav-link").forEach(function(link) {
+      link.addEventListener("click", function() {
+        const menu = document.getElementById("menuNavigasi");
+
+        if (menu.classList.contains("show")) {
+          bootstrap.Collapse.getOrCreateInstance(menu).hide();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
